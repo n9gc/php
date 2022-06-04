@@ -2,6 +2,10 @@
 
 namespace ScpoPHP;
 
+/**
+ * 缓存相关实用函数
+ * @link http://scpo-php.seventop.top/cache/
+ */
 class Cache {
 	/**
 	 * 检测文件是否被缓存

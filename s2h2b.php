@@ -2,6 +2,10 @@
 
 namespace ScpoPHP;
 
+/**
+ * 字符串、十六进制字符串和二进制字符串相互转换
+ * @link http://scpo-php.seventop.top/s2h2b/
+ */
 class S2h2b {
 	/**
 	 * 十六进制字符串转二进制字符串

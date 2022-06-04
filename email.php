@@ -6,6 +6,10 @@ require 'lib/class.phpmailer.php';
 require_once 'config.php';
 use ScpoPHP\Config\Email as Cfg;
 
+/**
+ * 邮件发送函数
+ * @link http://scpo-php.seventop.top/email/
+ */
 class Email {
 	/**
 	 * 发送邮件

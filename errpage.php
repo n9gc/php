@@ -2,6 +2,10 @@
 
 namespace ScpoPHP;
 
+/**
+ * 快速优雅地抛出错误
+ * @link http://scpo-php.seventop.top/errpage/
+ */
 class Errpage {
 	/**各错误码对应信息 */
 	static $code_info = array(

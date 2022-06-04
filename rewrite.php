@@ -2,6 +2,10 @@
 
 namespace ScpoPHP;
 
+/**
+ * 重写url时更加方便
+ * @link http://scpo-php.seventop.top/rewrite/
+ */
 class Rewrite {
 	/**
 	 * 获取伪静态下访问的uri和get请求字符串

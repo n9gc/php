@@ -2,6 +2,10 @@
 
 namespace ScpoPHP;
 
+/**
+ * ScpoAPI实现函数
+ * @link http://scpo-php.seventop.top/api/
+ */
 class Api {
 	/**
 	 * 打包api数据

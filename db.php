@@ -5,6 +5,10 @@ namespace ScpoPHP;
 require_once 'config.php';
 use ScpoPHP\Config\Sql as Cfg;
 
+/**
+ * 简单数据库操作
+ * @link http://scpo-php.seventop.top/db/
+ */
 class Db {
 	/**
 	 * sql连接
