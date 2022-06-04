@@ -3,6 +3,7 @@
 namespace ScpoPHP;
 
 require_once 'config.php';
+use ScpoPHP\Config\Sql as Cfg;
 
 class Db {
 	/**
@@ -13,7 +14,14 @@ class Db {
 	{
 		static $link = null, $linked = false;
 		if ($linked) return $link;
-		$link = mysqli_connect(...Config::$sql);
+		$link = mysqli_connect(
+			Cfg::$host,
+			Cfg::$name,
+			Cfg::$pwd,
+			Cfg::$db,
+			Cfg::$port,
+			Cfg::$socket
+		);
 		if ($link === false) throw new \Exception('link failed');
 		else $linked = true;
 		return $link;
