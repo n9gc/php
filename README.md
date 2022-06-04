@@ -1,3 +1,5 @@
+Don't read Chinese? [README-en.md](README-en.md)
+
 # ScpoPHP
 
 ScpoPHP是一个包含很多有用函数的PHP函数库，主要语言为中文。目前由幻想私社维护。
