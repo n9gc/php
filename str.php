@@ -4,9 +4,22 @@ namespace ScpoPHP;
 
 /**
  * 字符串、十六进制字符串和二进制字符串相互转换
- * @link http://scpo-php.seventop.top/s2h2b/
+ * @link http://scpo-php.seventop.top/str/
  */
-class S2h2b {
+class Str {
+	/**
+	 * 获取一个随机字符串
+	 * @param int $length 字符串长度
+	 * @param string set 字符集合
+	 * @return string 随机字符串
+	 */
+	static public function rand($length = 32, $set = '0123456789ABCDEF')
+	{
+		$str = '';
+		$m = strlen($set) - 1;
+		for ($i = 0; $i < $length; $i++) $str .= $set[rand(0, $m)];
+		return $str;
+	}
 	/**
 	 * 十六进制字符串转二进制字符串
 	 * @param string $s 十六进制字符串
@@ -28,34 +41,13 @@ class S2h2b {
 		return $r;
 	}
 	/**
-	 * 字符串转十六进制字符串
-	 * @param string $str 字符串
-	 * @return string 十六进制字符串
-	 */
-	static public function str2hex($s)
-	{
-		for ($r = '', $i = 0; $i < strlen($s); $i++) $r .= unpack('H*', $s[$i])[1];
-		return $r;
-	}
-	/**
-	 * 十六进制字符串转字符串
-	 * @param string $str 十六进制字符串
-	 * @return string 字符串
-	 */
-	static public function hex2str($s)
-	{
-		return hex2bin($s);
-		// for ($c = 0, $d = 0, $h = '', $s = strtolower($s), $r = '', $l = strlen($s), $i = 0; $i < $l; $i += 2) ($t = $s[$i] . $s[$i + 1])[0] < 8 ? $r .= pack('H2', $t) : ($t[0] > 'b' ? ($d = ($c = ($d = (int)base_convert($t[0], 16, 10)) - 10 - (int)($d / 13)) - 1 and $h = $t) : (--$d == 0 ? $r .= pack('H' . 2 * $c, $h . $t) : $h .= $t));
-		// return $r;
-	}
-	/**
 	 * 字符串转二进制字符串
 	 * @param string $s 字符串
 	 * @return string 二进制字符串
 	 */
 	static public function str2bin($s)
 	{
-		return self::hex2bin(self::str2hex($s));
+		return self::hex2bin(bin2hex($s));
 	}
 	/**
 	 * 二进制字符串转字符串
@@ -64,6 +56,6 @@ class S2h2b {
 	 */
 	static public function bin2str($s)
 	{
-		return self::hex2str(self::bin2hex($s));
+		return hex2bin(self::bin2hex($s));
 	}
 }
