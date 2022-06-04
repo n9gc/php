@@ -31,6 +31,27 @@ class Cookie
 		$secure = Cfg\NO_PARAM_SIGN,
 		$httponly = Cfg\NO_PARAM_SIGN
 	) {
+		return setcookie(...self::getParams(
+			Cfg::$params,
+			$name,
+			$value,
+			$expires_or_options,
+			$path,
+			$domain,
+			$secure,
+			$httponly
+		));
+	}
+	static public function getParams(
+		$default,
+		$name,
+		$value = Cfg\NO_PARAM_SIGN,
+		$expires_or_options = Cfg\NO_PARAM_SIGN,
+		$path = Cfg\NO_PARAM_SIGN,
+		$domain = Cfg\NO_PARAM_SIGN,
+		$secure = Cfg\NO_PARAM_SIGN,
+		$httponly = Cfg\NO_PARAM_SIGN
+	) {
 		$xop = array(
 			'name' => $name,
 			'value' => $value,
@@ -40,8 +61,7 @@ class Cookie
 			'secure' => $secure,
 			'httponly' => $httponly
 		);
-		$dop = Cfg::$params;
-		foreach ($xop as $param => $val) if ($val !== Cfg\NO_PARAM_SIGN) $dop[$param] = $val;
-		return setcookie(...$dop);
+		foreach ($xop as $param => $val) if ($val !== Cfg\NO_PARAM_SIGN) $default[$param] = $val;
+		return $default;
 	}
 }
