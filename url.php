@@ -10,13 +10,25 @@ class Url
 {
 	/**
 	 * 获取域名
+	 * @param bool $port 是否包含端口
 	 * @return string 域名
 	 */
-	static public function dmn()
+	static public function dmn($port)
 	{
-		if (substr_count($dmn = $_SERVER['HTTP_HOST'], '.') === 2) $dmn = substr($dmn, strpos($dmn, '.') + 1);
-		if (($pos = strpos($dmn, ':')) !== false) $dmn = substr($dmn, 0, $pos);
-		return $dmn;
+		static $dmn = array();
+		if (isset($dmn[1])) {
+			if ($port) return $dmn[1];
+			if (isset($dmn[0])) return $dmn[0];
+		} else {
+			$dmn[1] = $_SERVER['HTTP_HOST'];
+			if (substr_count($dmn[1], '.') === 2) $dmn[1] = substr($dmn[1], strpos($dmn[1], '.') + 1);
+		}
+		return $port
+			? $dmn[1]
+			: ($dmn[0] = ($pos = strpos($dmn[1], ':')) !== false
+				? substr($dmn[1], 0, $pos)
+				: $dmn[1]
+			);
 	}
 	/**
 	 * 获取伪静态下访问的uri和get请求字符串
