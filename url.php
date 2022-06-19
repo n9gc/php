@@ -20,8 +20,9 @@ class Url
 			if ($port) return $dmn[1];
 			if (isset($dmn[0])) return $dmn[0];
 		} else {
-			$dmn[1] = $_SERVER['HTTP_HOST'];
-			if (substr_count($dmn[1], '.') === 2) $dmn[1] = substr($dmn[1], strpos($dmn[1], '.') + 1);
+			$dmn[1] = explode('.', $_SERVER['HTTP_HOST']);
+			$dmn[1] = array(array_pop($dmn[1]), array_pop($dmn[1]));
+			$dmn[1] = "{$dmn[1][1]}.{$dmn[1][0]}";
 		}
 		return $port
 			? $dmn[1]
