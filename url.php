@@ -13,7 +13,7 @@ class Url
 	 * @param bool $port 是否包含端口
 	 * @return string 域名
 	 */
-	static public function dmn($port)
+	static public function dmn($port = false)
 	{
 		static $dmn = array();
 		if (isset($dmn[1])) {
