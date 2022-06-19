@@ -36,11 +36,12 @@ class Url
 	 */
 	static public function rewrite_uriget()
 	{
+		static $mem;
+		if ($mem) return $mem;
 		if (($pos = strpos($uri = $_SERVER['QUERY_STRING'], '&')) !== false) {
-			$get = substr($uri, $pos);
+			$get = substr($uri, $pos + 1);
 			$uri = substr($uri, 0, $pos);
-			$get[0] = '?';
 		} else $get = '';
-		return array($uri, $get);
+		return $mem = array($uri, $get);
 	}
 }
