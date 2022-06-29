@@ -3,13 +3,16 @@
 namespace ScpoPHP;
 
 require_once 'config.php';
-use ScpoPHP\Config\Sql as Cfg;
+
+use mysqli;
+use ScpoPHP\Config\Db as Cfg;
 
 /**
  * 简单数据库操作
  * @link http://scpo-php.seventop.top/db/
  */
-class Db {
+class Db
+{
 	/**
 	 * sql连接
 	 * @return \mysqli sql连接
@@ -18,22 +21,54 @@ class Db {
 	{
 		static $link = null, $linked = false;
 		if ($linked) return $link;
-		$link = mysqli_connect(
-			Cfg::$host,
-			Cfg::$name,
-			Cfg::$pwd,
-			Cfg::$db,
-			Cfg::$port,
-			Cfg::$socket
-		);
+		$link = mysqli_connect(...Cfg::$params);
 		if ($link === false) throw new \Exception('link failed');
 		else $linked = true;
 		return $link;
+	}
+	/**
+	 * 运行sql查询
+	 * @param array|string $do 查询语句
+	 * @return array|\mysqli_result|bool 查询结果
+	 */
+	static public function query($do)
+	{
+		if (is_array($do)) {
+			$rslt = array();
+			foreach ($do as $query) $rslt[] = mysqli_query(self::link(), $query);
+			return $rslt;
+		} else return mysqli_query(self::link(), $do);
 	}
 	/**上一次数据的ID */
 	static public $lastID = 0;
 	/**上一次操作的表 */
 	static public $lastTable = '';
+	/**
+	 * 自动识别MySQL数据类型并进行转换
+	 * @param mixed $data 数据
+	 * @return string 转换后的字符串
+	 */
+	static public function test_data($data)
+	{
+		switch (true) {
+			case is_numeric($data):
+			case (substr($data, 0, 2) === '0x' &&
+				ctype_xdigit(substr($data, 2))
+			):
+			case ($data[0] === '\'' &&
+				substr($data, -1) === '\'' &&
+				strpos(str_replace(array('\\\\', '\'\'', '\\\''), '', $data), '\'') === false
+			):
+				return (string)$data;
+			case ($data[0] === '"' &&
+				substr($data, -1) === '"' &&
+				strpos(str_replace(array('\\\\', '""', '\"'), '', $data), '"') === false
+			):
+				return '\'' . str_replace(array('\"', '""'), '\'\'', $data) . '\'';
+			default:
+				return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $data) . '\'';
+		}
+	}
 	/**
 	 * 插入数据
 	 * @param array $data 数据
@@ -48,7 +83,7 @@ class Db {
 		$str1 = ') VALUES ( ';
 		foreach ($data as $key => $val) {
 			$str0 .= "`$key`,";
-			$str1 .= "'$val',";
+			$str1 .= self::test_data($val) . ',';
 		}
 		$str = substr($str0, 0, -1) . substr($str1, 0, -1) . ')';
 		$rslt = mysqli_query(self::link(), $str);
@@ -70,11 +105,11 @@ class Db {
 		empty($table) ? $table = self::$lastTable : self::$lastTable = $table;
 		if (empty($where)) $where = self::$lastID ? 'id' . self::$lastID : '`id`=LAST_INSERT_ID()';
 		$str = "UPDATE `$table` SET ";
-		foreach ($data as $key => $val) $str .= "`$key`='$val',";
+		foreach ($data as $key => $val) $str .= "`$key`=" . self::test_data($val) . ',';
 		$str = substr($str, 0, -1) . ' WHERE ';
 		if (is_string($where)) $str .= $where;
 		else {
-			foreach ($where as $key => $val) $str .= "`{$key}`='{$val}',";
+			foreach ($where as $key => $val) $str .= "`$key`=" . self::test_data($val) . ',';
 			$str = substr($str, 0, -1);
 		}
 		$rslt = mysqli_query(self::link(), $str);
@@ -87,7 +122,7 @@ class Db {
 	 * @param string $table 目标表
 	 * @return array 结果
 	 */
-	static public function sql_select($where = '', $what = '*', $table = '')
+	static public function select($where = '', $what = '*', $table = '')
 	{
 		empty($table) ? $table = self::$lastTable : self::$lastTable = $table;
 		if (empty($where)) $where = self::$lastID ? '`id`=' . self::$lastID : '`id`=LAST_INSERT_ID()';
@@ -100,7 +135,7 @@ class Db {
 		$str .= " FROM `$table` WHERE ";
 		if (is_string($where)) $str .= $where;
 		else {
-			foreach ($where as $key => $val) $str .= "`$key`='$val',";
+			foreach ($where as $key => $val) $str .= "`$key`=" . self::test_data($val) . ',';
 			$str = substr($str, 0, -1);
 		}
 		$r = mysqli_query(self::link(), $str);
