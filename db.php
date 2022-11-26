@@ -7,11 +7,6 @@ require_once 'config.php';
 use mysqli;
 use ScpoPHP\Config\Db as Cfg;
 
-function hh()
-{
-	return 'hh';
-}
-
 /**
  * 简单数据库操作
  * @link http://scpo-php.seventop.top/db/
@@ -150,10 +145,25 @@ class Db
 			foreach ($what as $val) $str .= "`$val`,";
 			$str = substr($str, 0, -1);
 		}
-		$str .= " FROM `$table` WHERE   " . self::cnv_where($where);
+		$str .= " FROM `$table` WHERE " . self::cnv_where($where);
 		$r = mysqli_query(self::link(), $str);
+		if (is_bool($r)) return $r;
 		$rslt = array();
 		while ($row = mysqli_fetch_array($r)) $rslt[] = $row;
 		return $rslt;
+	}
+	/**
+	 * 删除数据
+	 * @param array|string $where 筛选的条件
+	 * @param string $table 目标表
+	 * @return bool 结果
+	 */
+	static public function delete($where = '', $table = '')
+	{
+		empty($table) ? $table = self::$lastTable : self::$lastTable = $table;
+		if (empty($where)) $where = self::$lastID ? '`id`=' . self::$lastID : '`id`=LAST_INSERT_ID()';
+		$str = "DELETE FROM `$table` WHERE " . self::cnv_where($where);
+		$r = mysqli_query(self::link(), $str);
+		return $r;
 	}
 }
