@@ -50,23 +50,34 @@ class Db
 	 */
 	static public function test_data($data)
 	{
-		switch (true) {
-			case is_numeric($data):
-			case (substr($data, 0, 2) === '0x' &&
+
+		if (
+			is_numeric($data)
+			|| (substr($data, 0, 2) === '0x' &&
 				ctype_xdigit(substr($data, 2))
-			):
-			case ($data[0] === '\'' &&
+			) || ($data[0] === '\'' &&
 				substr($data, -1) === '\'' &&
 				strpos(str_replace(array('\\\\', '\'\'', '\\\''), '', $data), '\'') === false
-			):
-				return (string)$data;
-			case ($data[0] === '"' &&
-				substr($data, -1) === '"' &&
-				strpos(str_replace(array('\\\\', '""', '\"'), '', $data), '"') === false
-			):
-				return '\'' . str_replace(array('\"', '""'), '\'\'', $data) . '\'';
-			default:
-				return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $data) . '\'';
+			)
+		) return (string)$data;
+		else if (
+			$data[0] === '"' &&
+			substr($data, -1) === '"' &&
+			strpos(str_replace(array('\\\\', '""', '\"'), '', $data), '"') === false
+		) return '\'' . str_replace(array('\"', '""'), '\'\'', $data) . '\'';
+		else return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $data) . '\'';
+	}
+	/**
+	 * 处理WHERE子句内容
+	 * @param array|string $where 内容
+	 * @return string WHERE子句文本
+	 */
+	static public function cnv_where($where) {
+		if (is_string($where)) return $where;
+		else {
+			$str = '   ';
+			foreach ($where as $key => $val) $str .= " `$key`=0x" . bin2hex($val) . ' AND';
+			return substr($str, 0, -3);
 		}
 	}
 	/**
@@ -83,14 +94,11 @@ class Db
 		$str1 = ') VALUES ( ';
 		foreach ($data as $key => $val) {
 			$str0 .= "`$key`,";
-			$str1 .= self::test_data($val) . ',';
+			$str1 .= '0x' . bin2hex($val) . ',';
 		}
 		$str = substr($str0, 0, -1) . substr($str1, 0, -1) . ')';
 		$rslt = mysqli_query(self::link(), $str);
-		if ($getID) {
-			$rslt = mysqli_query(self::link(), 'SELECT LAST_INSERT_ID()');
-			$rslt = mysqli_fetch_array($rslt)[0];
-		}
+		if ($getID) $rslt = mysqli_fetch_array(mysqli_query(self::link(), 'SELECT LAST_INSERT_ID()'))[0];
 		return self::$lastID = $rslt;
 	}
 	/**
@@ -105,13 +113,8 @@ class Db
 		empty($table) ? $table = self::$lastTable : self::$lastTable = $table;
 		if (empty($where)) $where = self::$lastID ? 'id' . self::$lastID : '`id`=LAST_INSERT_ID()';
 		$str = "UPDATE `$table` SET ";
-		foreach ($data as $key => $val) $str .= "`$key`=" . self::test_data($val) . ',';
-		$str = substr($str, 0, -1) . ' WHERE ';
-		if (is_string($where)) $str .= $where;
-		else {
-			foreach ($where as $key => $val) $str .= "`$key`=" . self::test_data($val) . ',';
-			$str = substr($str, 0, -1);
-		}
+		foreach ($data as $key => $val) $str .= "`$key`=0x" . bin2hex($val) . ',';
+		$str = substr($str, 0, -1) . ' WHERE ' . self::cnv_where($where);
 		$rslt = mysqli_query(self::link(), $str);
 		return $rslt;
 	}
@@ -132,15 +135,10 @@ class Db
 			foreach ($what as $val) $str .= "`$val`,";
 			$str = substr($str, 0, -1);
 		}
-		$str .= " FROM `$table` WHERE ";
-		if (is_string($where)) $str .= $where;
-		else {
-			foreach ($where as $key => $val) $str .= "`$key`=" . self::test_data($val) . ',';
-			$str = substr($str, 0, -1);
-		}
+		$str .= " FROM `$table` WHERE   " . self::cnv_where($where);
 		$r = mysqli_query(self::link(), $str);
 		$rslt = array();
-		while ($row = mysqli_fetch_array($r)) array_push($rslt, $row);
+		while ($row = mysqli_fetch_array($r)) $rslt[] = $row;
 		return $rslt;
 	}
 }
