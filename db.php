@@ -7,6 +7,11 @@ require_once 'config.php';
 use mysqli;
 use ScpoPHP\Config\Db as Cfg;
 
+function hh()
+{
+	return 'hh';
+}
+
 /**
  * 简单数据库操作
  * @link http://scpo-php.seventop.top/db/
@@ -68,15 +73,25 @@ class Db
 		else return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $data) . '\'';
 	}
 	/**
+	 * 转十六进制
+	 * @param mixed $data 数据
+	 * @return string 转换结果
+	 */
+	static public function to_hex($data)
+	{
+		return is_numeric($data) ? (string)$data : '0x' . bin2hex($data);
+	}
+	/**
 	 * 处理WHERE子句内容
 	 * @param array|string $where 内容
 	 * @return string WHERE子句文本
 	 */
-	static public function cnv_where($where) {
+	static public function cnv_where($where)
+	{
 		if (is_string($where)) return $where;
 		else {
 			$str = '   ';
-			foreach ($where as $key => $val) $str .= " `$key`=0x" . bin2hex($val) . ' AND';
+			foreach ($where as $key => $val) $str .= " `$key`=" . self::to_hex($val) . ' AND';
 			return substr($str, 0, -3);
 		}
 	}
@@ -94,7 +109,7 @@ class Db
 		$str1 = ') VALUES ( ';
 		foreach ($data as $key => $val) {
 			$str0 .= "`$key`,";
-			$str1 .= '0x' . bin2hex($val) . ',';
+			$str1 .= self::to_hex($val) . ',';
 		}
 		$str = substr($str0, 0, -1) . substr($str1, 0, -1) . ')';
 		$rslt = mysqli_query(self::link(), $str);
@@ -113,7 +128,7 @@ class Db
 		empty($table) ? $table = self::$lastTable : self::$lastTable = $table;
 		if (empty($where)) $where = self::$lastID ? 'id' . self::$lastID : '`id`=LAST_INSERT_ID()';
 		$str = "UPDATE `$table` SET ";
-		foreach ($data as $key => $val) $str .= "`$key`=0x" . bin2hex($val) . ',';
+		foreach ($data as $key => $val) $str .= "`$key`=" . self::to_hex($val) . ',';
 		$str = substr($str, 0, -1) . ' WHERE ' . self::cnv_where($where);
 		$rslt = mysqli_query(self::link(), $str);
 		return $rslt;
