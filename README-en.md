@@ -22,8 +22,8 @@ The modules marked with "*" have not been developed completely.
 
 ## Useage
 
-1. Clone the repositories to the local
-2. Copy `config.default.php` and rename it to `config.php`
+1. Clone the repositories to the local through `git submodule add https://github.com/n9gc/php.git scpo-php`
+2. Copy `scpo-php/config.default.php` and rename it to `config.php`
 3. Change the congigures in `config.php`
 4. Add the sentence `require 'scpos.php'` to your project
 5. Use the functions like `ScpoPHP\Module::method()` and enjoy!

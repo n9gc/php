@@ -20,8 +20,8 @@ ScpoPHP 是一个包含很多有用函数的 PHP 函数库，主要语言为中�
 
 ## 如何使用
 
-1. 将 git 库克隆到本地
-2. 复制`config.default.php`为`config.php`
-3. 修改`config.php`的配置
-4. 在依赖本库的项目中修改或添加语句`require 'scpo-php/xxx.php'`
-5. 使用`ScpoPHP\Xxx::function()`来愉快的调用函数
+1. 通过 `git submodule add https://github.com/n9gc/php.git scpo-php` 下载本项目
+2. 复制 `scpo-php/config.default.php` 为 `config.php`
+3. 修改 `config.php` 的配置
+4. 在依赖本库的项目中修改或添加语句 `require 'scpo-php/xxx.php'`
+5. 使用 `ScpoPHP\Xxx::function()` 来愉快的调用函数
