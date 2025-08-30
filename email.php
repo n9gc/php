@@ -5,6 +5,7 @@ namespace ScpoPHP;
 require 'lib/class.phpmailer.php';
 require_once 'config.php';
 use ScpoPHP\Config\Email as Cfg;
+use ScpoPHP\Config\Base as BaseCfg;
 
 /**
  * 邮件发送函数
@@ -28,7 +29,7 @@ class Email {
 		$is_HTML = true
 	) {
 		$mail = new \PHPMailer();
-		$mail->CharSet = Config::$charset;
+		$mail->CharSet = BaseCfg::$now->charset;
 		if ($is_HTML) {
 			$mail->IsHTML();
 			$mail->AltBody = '您的查看器不支持查看此HTML邮件！';

@@ -1,12 +1,13 @@
 <?php
 
 // 全局
-namespace ScpoPHP {
-	/**用户配置 */
-	class Config
+namespace ScpoPHP\Config {
+	/**基本配置 */
+	class Base
 	{
+		public static $now = new Self();
 		/**默认字符编码 */
-		static public $charset = 'UTF-8';
+		public $charset = 'UTF-8';
 	}
 }
 
