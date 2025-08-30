@@ -21,7 +21,7 @@ class Db
 	{
 		static $link = null, $linked = false;
 		if ($linked) return $link;
-		$link = mysqli_connect(...Cfg::$params);
+		$link = mysqli_connect(...Cfg::$now->params);
 		if ($link === false) throw new \Exception('link failed');
 		else $linked = true;
 		return $link;

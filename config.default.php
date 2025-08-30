@@ -16,15 +16,16 @@ namespace ScpoPHP\Config {
 	/**数据库操作配置 */
 	class Db
 	{
+		public static $now = new Self();
 		/**连接参数 */
-		static public $params = array(
+		public $params = [
 			'hostname' => 'localhost',
 			'username' => 'root',
 			'password' => '123456',
 			'database' => 'mysql',
 			'port' => 3306,
 			'socket' => null
-		);
+		];
 	}
 }
 
