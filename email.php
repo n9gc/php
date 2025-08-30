@@ -4,6 +4,7 @@ namespace ScpoPHP;
 
 require 'lib/class.phpmailer.php';
 require_once 'config.php';
+
 use ScpoPHP\Config\Email as Cfg;
 use ScpoPHP\Config\Base as BaseCfg;
 
@@ -11,7 +12,8 @@ use ScpoPHP\Config\Base as BaseCfg;
  * 邮件发送函数
  * @link http://scpo-php.seventop.top/email/
  */
-class Email {
+class Email
+{
 	/**
 	 * 发送邮件
 	 * @param string $subject 邮件主题
@@ -35,12 +37,12 @@ class Email {
 			$mail->AltBody = '您的查看器不支持查看此HTML邮件！';
 		}
 		$mail->IsSMTP();
-		$mail->Host = Cfg\Smtp::$host;
-		$mail->Port = Cfg\Smtp::$port;
-		$mail->Username = Cfg\Smtp::$name;
-		if ($mail->SMTPAuth = !empty(Cfg\Smtp::$pwd)) $mail->Password = Cfg\Smtp::$pwd;
-		$mail->From = Cfg::$addr;
-		$mail->FromName = Cfg::$name;
+		$mail->Host = Cfg::$smtp->host;
+		$mail->Port = Cfg::$smtp->port;
+		$mail->Username = Cfg::$smtp->name;
+		if ($mail->SMTPAuth = !empty(Cfg::$smtp->pwd)) $mail->Password = Cfg::$smtp->pwd;
+		$mail->From = Cfg::$now->addr;
+		$mail->FromName = Cfg::$now->name;
 		$mail->Subject = $subject;
 		$mail->Body = $body;
 		if (is_string($name)) $name = array($name);

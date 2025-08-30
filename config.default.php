@@ -62,16 +62,12 @@ namespace ScpoPHP\Config {
 // user.php
 namespace ScpoPHP\Config {
 	/**用户系统配置 */
-	class User
-	{
-	}
+	class User {}
 }
 
 namespace ScpoPHP\Config\User {
 	/**账号数据表相关 */
-	class Acct
-	{
-	}
+	class Acct {}
 }
 
 namespace ScpoPHP\Config\User\Acct {
@@ -174,24 +170,26 @@ namespace ScpoPHP\Config {
 	/**邮件发送配置 */
 	class Email
 	{
+		public static $now = new Self();
+		public static $smtp = new Email\Smtp();
 		/**作为发送人显示的地址 */
-		static public $addr = 'someone@163.com';
+		public $addr = 'someone@163.com';
 		/**作为发送人使用的名称 */
-		static public $name = 'someone';
+		public $name = 'someone';
 	}
-}
 
-namespace ScpoPHP\Config\Email {
-	/**邮件发送SMTP服务器配置 */
-	class Smtp
-	{
-		/**SMTP服务器地址 */
-		static public $host = 'SMTP.163.com';
-		/**SMTP服务器端口 */
-		static public $port = 25;
-		/**SMTP账号的名称 */
-		static public $name = 'user';
-		/**SMTP账号的密码 */
-		static public $pwd = 'PASSWORD';
+	namespace ScpoPhp\Config\Email {
+		/**邮件发送SMTP服务器配置 */
+		class Smtp
+		{
+			/**SMTP服务器地址 */
+			public $host = 'SMTP.163.com';
+			/**SMTP服务器端口 */
+			public $port = 25;
+			/**SMTP账号的名称 */
+			public $name = 'user';
+			/**SMTP账号的密码 */
+			public $pwd = 'PASSWORD';
+		}
 	}
 }
