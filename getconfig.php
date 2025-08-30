@@ -2,6 +2,9 @@
 
 // 全局
 namespace ScpoPHP\Config {
+	function init_now($n) {
+		$n::$now = new $n;
+	}
 	/**基本配置 */
 	class Base
 	{
@@ -11,6 +14,7 @@ namespace ScpoPHP\Config {
 			public $charset = 'UTF-8',
 		) {}
 	}
+	init_now(Base::class);
 }
 
 // db.php
@@ -31,6 +35,7 @@ namespace ScpoPHP\Config {
 			],
 		) {}
 	}
+	init_now(Db::class);
 }
 
 // cookie.php
@@ -51,6 +56,7 @@ namespace ScpoPHP\Config {
 			],
 		) {}
 	}
+	init_now(Cookie::class);
 }
 
 // captcha.php
@@ -199,4 +205,5 @@ namespace ScpoPHP\Config {
 			public $name = 'someone',
 		) {}
 	}
+	init_now(Email::class);
 }
