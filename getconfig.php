@@ -6,8 +6,10 @@ namespace ScpoPHP\Config {
 	class Base
 	{
 		public static Self $now;
-		/**默认字符编码 */
-		public $charset = 'UTF-8';
+		public function __construct(
+			/**默认字符编码 */
+			public $charset = 'UTF-8',
+		) {}
 	}
 }
 
@@ -17,15 +19,17 @@ namespace ScpoPHP\Config {
 	class Db
 	{
 		public static Self $now;
-		/**连接参数 */
-		public $params = [
-			'hostname' => 'localhost',
-			'username' => 'root',
-			'password' => '123456',
-			'database' => 'mysql',
-			'port' => 3306,
-			'socket' => null
-		];
+		public function __construct(
+			/**连接参数 */
+			public $params = [
+				'hostname' => 'localhost',
+				'username' => 'root',
+				'password' => '123456',
+				'database' => 'mysql',
+				'port' => 3306,
+				'socket' => null
+			],
+		) {}
 	}
 }
 
@@ -35,15 +39,17 @@ namespace ScpoPHP\Config {
 	class Cookie
 	{
 		public static Self $now;
-		/**setcookie默认参数 */
-		public $params = [
-			'value' => '',
-			'expires_or_options' => 0,
-			'path' => '',
-			'domain' => '',
-			'secure' => false,
-			'httponly' => false
-		];
+		public function __construct(
+			/**setcookie默认参数 */
+			public $params = [
+				'value' => '',
+				'expires_or_options' => 0,
+				'path' => '',
+				'domain' => '',
+				'secure' => false,
+				'httponly' => false
+			],
+		) {}
 	}
 }
 
@@ -170,24 +176,27 @@ namespace ScpoPHP\Config {
 	/**邮件发送SMTP服务器配置 */
 	class Smtp
 	{
-		/**SMTP服务器地址 */
-		public $host = 'SMTP.163.com';
-		/**SMTP服务器端口 */
-		public $port = 25;
-		/**SMTP账号的名称 */
-		public $name = 'user';
-		/**SMTP账号的密码 */
-		public $pwd = 'PASSWORD';
+		public function __construct(
+			/**SMTP服务器地址 */
+			public $host = 'SMTP.163.com',
+			/**SMTP服务器端口 */
+			public $port = 25,
+			/**SMTP账号的名称 */
+			public $name = 'user',
+			/**SMTP账号的密码 */
+			public $pwd = 'PASSWORD',
+		) {}
 	}
-
 	/**邮件发送配置 */
 	class Email
 	{
 		public static Self $now;
-		public Smtp $smtp;
-		/**作为发送人显示的地址 */
-		public $addr = 'someone@163.com';
-		/**作为发送人使用的名称 */
-		public $name = 'someone';
+		public function __construct(
+			public $smtp = new Smtp(),
+			/**作为发送人显示的地址 */
+			public $addr = 'someone@163.com',
+			/**作为发送人使用的名称 */
+			public $name = 'someone',
+		) {}
 	}
 }
