@@ -34,21 +34,17 @@ namespace ScpoPHP\Config {
 	/**cookie简便函数相关 */
 	class Cookie
 	{
+		public static $now = new Self();
 		/**setcookie默认参数 */
-		static public $params = array(
+		public $params = [
 			'value' => '',
 			'expires_or_options' => 0,
 			'path' => '',
 			'domain' => '',
 			'secure' => false,
 			'httponly' => false
-		);
+		];
 	}
-}
-
-namespace ScpoPHP\Config\Cookie {
-	/**函数默认参数 */
-	const NO_PARAM_SIGN = null;
 }
 
 // captcha.php

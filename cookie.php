@@ -24,15 +24,15 @@ class Cookie
 	 */
 	static public function set(
 		$name,
-		$value = Cfg\NO_PARAM_SIGN,
-		$expires_or_options = Cfg\NO_PARAM_SIGN,
-		$path = Cfg\NO_PARAM_SIGN,
-		$domain = Cfg\NO_PARAM_SIGN,
-		$secure = Cfg\NO_PARAM_SIGN,
-		$httponly = Cfg\NO_PARAM_SIGN
+		$value = null,
+		$expires_or_options = null,
+		$path = null,
+		$domain = null,
+		$secure = null,
+		$httponly = null
 	) {
 		return setcookie(...self::getParams(
-			Cfg::$params,
+			Cfg::$now->params,
 			$name,
 			$value,
 			$expires_or_options,
@@ -45,12 +45,12 @@ class Cookie
 	static public function getParams(
 		$default,
 		$name,
-		$value = Cfg\NO_PARAM_SIGN,
-		$expires_or_options = Cfg\NO_PARAM_SIGN,
-		$path = Cfg\NO_PARAM_SIGN,
-		$domain = Cfg\NO_PARAM_SIGN,
-		$secure = Cfg\NO_PARAM_SIGN,
-		$httponly = Cfg\NO_PARAM_SIGN
+		$value = null,
+		$expires_or_options = null,
+		$path = null,
+		$domain = null,
+		$secure = null,
+		$httponly = null
 	) {
 		$xop = array(
 			'name' => $name,
@@ -61,7 +61,7 @@ class Cookie
 			'secure' => $secure,
 			'httponly' => $httponly
 		);
-		foreach ($xop as $param => $val) if ($val !== Cfg\NO_PARAM_SIGN) $default[$param] = $val;
+		foreach ($xop as $param => $val) if (!is_null($val)) $default[$param] = $val;
 		return $default;
 	}
 }
