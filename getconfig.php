@@ -5,7 +5,7 @@ namespace ScpoPHP\Config {
 	/**基本配置 */
 	class Base
 	{
-		public static $now = new Self();
+		public static Self $now;
 		/**默认字符编码 */
 		public $charset = 'UTF-8';
 	}
@@ -16,7 +16,7 @@ namespace ScpoPHP\Config {
 	/**数据库操作配置 */
 	class Db
 	{
-		public static $now = new Self();
+		public static Self $now;
 		/**连接参数 */
 		public $params = [
 			'hostname' => 'localhost',
@@ -34,7 +34,7 @@ namespace ScpoPHP\Config {
 	/**cookie简便函数相关 */
 	class Cookie
 	{
-		public static $now = new Self();
+		public static Self $now;
 		/**setcookie默认参数 */
 		public $params = [
 			'value' => '',
@@ -167,29 +167,27 @@ namespace ScpoPHP\Config\User\Auth {
 
 // email.php
 namespace ScpoPHP\Config {
+	/**邮件发送SMTP服务器配置 */
+	class Smtp
+	{
+		/**SMTP服务器地址 */
+		public $host = 'SMTP.163.com';
+		/**SMTP服务器端口 */
+		public $port = 25;
+		/**SMTP账号的名称 */
+		public $name = 'user';
+		/**SMTP账号的密码 */
+		public $pwd = 'PASSWORD';
+	}
+
 	/**邮件发送配置 */
 	class Email
 	{
-		public static $now = new Self();
-		public static $smtp = new Email\Smtp();
+		public static Self $now;
+		public Smtp $smtp;
 		/**作为发送人显示的地址 */
 		public $addr = 'someone@163.com';
 		/**作为发送人使用的名称 */
 		public $name = 'someone';
-	}
-
-	namespace ScpoPhp\Config\Email {
-		/**邮件发送SMTP服务器配置 */
-		class Smtp
-		{
-			/**SMTP服务器地址 */
-			public $host = 'SMTP.163.com';
-			/**SMTP服务器端口 */
-			public $port = 25;
-			/**SMTP账号的名称 */
-			public $name = 'user';
-			/**SMTP账号的密码 */
-			public $pwd = 'PASSWORD';
-		}
 	}
 }

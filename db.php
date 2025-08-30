@@ -2,7 +2,7 @@
 
 namespace ScpoPHP;
 
-require_once 'config.php';
+require_once __DIR__ . '/getconfig.php';
 
 use mysqli;
 use ScpoPHP\Config\Db as Cfg;

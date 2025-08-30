@@ -2,9 +2,10 @@
 
 namespace ScpoPHP;
 
-require_once 'config.php';
+require_once __DIR__ . '/getconfig.php';
 
 use ScpoPHP\Config\Cookie as Cfg;
+
 
 /**
  * cookie简便函数

@@ -2,8 +2,8 @@
 
 namespace ScpoPHP;
 
-require 'lib/class.phpmailer.php';
-require_once 'config.php';
+require __DIR__ . '/lib/class.phpmailer.php';
+require __DIR__ .'/getconfig.php';
 
 use ScpoPHP\Config\Email as Cfg;
 use ScpoPHP\Config\Base as BaseCfg;
