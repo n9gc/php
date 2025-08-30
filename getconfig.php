@@ -2,9 +2,6 @@
 
 // 全局
 namespace ScpoPHP\Config {
-	function init_now($n) {
-		$n::$now = new $n;
-	}
 	/**基本配置 */
 	class Base
 	{
@@ -12,9 +9,11 @@ namespace ScpoPHP\Config {
 		public function __construct(
 			/**默认字符编码 */
 			public $charset = 'UTF-8',
-		) {}
+		) {
+			Self::$now = $this;
+		}
 	}
-	init_now(Base::class);
+	new Base();
 }
 
 // db.php
@@ -33,9 +32,11 @@ namespace ScpoPHP\Config {
 				'port' => 3306,
 				'socket' => null
 			],
-		) {}
+		) {
+			Self::$now = $this;
+		}
 	}
-	init_now(Db::class);
+	new Db();
 }
 
 // cookie.php
@@ -54,9 +55,11 @@ namespace ScpoPHP\Config {
 				'secure' => false,
 				'httponly' => false
 			],
-		) {}
+		) {
+			Self::$now = $this;
+		}
 	}
-	init_now(Cookie::class);
+	new Cookie();
 }
 
 // captcha.php
@@ -203,7 +206,9 @@ namespace ScpoPHP\Config {
 			public $addr = 'someone@163.com',
 			/**作为发送人使用的名称 */
 			public $name = 'someone',
-		) {}
+		) {
+			Self::$now = $this;
+		}
 	}
-	init_now(Email::class);
+	new Email();
 }
