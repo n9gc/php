@@ -19,7 +19,8 @@ namespace ScpoPHP\Config {
 		public static Self $now;
 		public function __construct(
 			/**默认错误显示页面 */
-			public $callback_page = '/errpage.html?info=',
+			public $callback_page = '/errpage.html?',
+			public $callback_query = '&info=',
 		) {
 			Self::$now = $this;
 		}
