@@ -1,6 +1,5 @@
 <?php
 
-// 全局
 namespace ScpoPHP\Config {
 	/**基本配置 */
 	class Base
@@ -14,10 +13,18 @@ namespace ScpoPHP\Config {
 		}
 	}
 	new Base();
-}
-
-// db.php
-namespace ScpoPHP\Config {
+	/**便捷错误处理 */
+	class Errpage
+	{
+		public static Self $now;
+		public function __construct(
+			/**默认错误显示页面 */
+			public $callback_page = '/errpage.html?info=',
+		) {
+			Self::$now = $this;
+		}
+	}
+	new Errpage();
 	/**数据库操作配置 */
 	class Db
 	{
@@ -37,10 +44,6 @@ namespace ScpoPHP\Config {
 		}
 	}
 	new Db();
-}
-
-// cookie.php
-namespace ScpoPHP\Config {
 	/**cookie简便函数相关 */
 	class Cookie
 	{
