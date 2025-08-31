@@ -2,6 +2,8 @@
 
 namespace ScpoPHP;
 
+require_once __DIR__ . '/url.php';
+
 use ScpoPHP\Config\Errpage as Cfg;
 
 /**
@@ -30,15 +32,14 @@ class Errpage
 	 */
 	static public function get_ret($file, $from = '')
 	{
-		static $location = 'Location: //' . $_SERVER['HTTP_HOST'] . Cfg::$now->callback_page . Cfg::$now->callback_query;
-		$ret = function ($info) use ($location, $file) {
-			header($location . urlencode("$file:\n$info"));
+		static $c_url = '//' . $_SERVER['HTTP_HOST'] . Cfg::$now->callback_page;
+		$ret = function ($info) use ($c_url, $file) {
+			header('Location: ' . Url::rep_query($c_url, [Cfg::$now->query_key => "$file:\n$info"]));
 			die();
 		};
 		$end = function ($info) use ($from, $ret) {
 			if (!$from) $ret('No $from but using end function in ScpoPHP\Errpage:' . __LINE__);
-			if (!str_ends_with($from, '?')) $from .= '?';
-			header("Location: $from" . Cfg::$now->callback_query . urlencode($info));
+			header("Location: " . Url::rep_query($from, [Cfg::$now->query_key => $info]));
 			die();
 		};
 		return [$ret, $end];

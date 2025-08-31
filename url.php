@@ -45,4 +45,18 @@ class Url
 		} else $get = '';
 		return $mem = array($uri, $get);
 	}
+	/**
+	 * 替换查询字符串
+	 */
+	static public function rep_query($url, $arr)
+	{
+		$base = ($qm = strpos($url, '?')) === false
+			? $url
+			: (($hash = strpos($url, '#', $qm)) === false
+				? substr($url, 0, $qm)
+				: substr($url, 0, $qm) . substr($url, $hash));
+		[$path, $hash] = array_pad(explode('#', $base, 2), 2, '');
+		$query = $arr ? '?' . http_build_query($arr, '', '&', PHP_QUERY_RFC3986) : '';
+		return $path . $query . ($hash === '' ? '' : '#' . $hash);
+	}
 }
