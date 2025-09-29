@@ -3,7 +3,7 @@
 namespace ScpoPHP;
 
 require __DIR__ . '/lib/class.phpmailer.php';
-require_once __DIR__ .'/getconfig.php';
+require_once __DIR__ . '/getconfig.php';
 
 use ScpoPHP\Config\Email as Cfg;
 use ScpoPHP\Config\Base as BaseCfg;
@@ -21,7 +21,7 @@ class Email
 	 * @param string|array $addr 接收人的地址
 	 * @param string|array $name 接收人的名称
 	 * @param bool $is_HTML 邮件格式是否是HTML
-	 * @return bool|array 是否成功发送
+	 * @return bool|string|array 是否成功发送
 	 */
 	static public function send(
 		$subject = '',
@@ -50,7 +50,7 @@ class Email
 		if (is_string($name)) $name = array($name);
 		if (is_string($addr)) {
 			$mail->AddAddress($addr, $name[0]);
-			$rslt = $mail->Send();
+			$rslt = $mail->Send() ? true : $mail->ErrorInfo;
 		} else {
 			$rslt = array();
 			if (($caddr = count($addr)) > ($cname = count($name))) {
@@ -59,7 +59,7 @@ class Email
 			}
 			for ($i = 0; $i < $caddr; $i++) {
 				$mail->AddAddress($addr[$i], $name[$i]);
-				array_push($rslt, $mail->Send());
+				array_push($rslt, $mail->Send() ? true : $mail->ErrorInfo);
 				$mail->ClearAllRecipients();
 			}
 		}
