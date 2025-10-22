@@ -20,7 +20,10 @@ namespace ScpoPHP\Config {
 		public function __construct(
 			/**默认错误显示页面 */
 			public $callback_page = '/errpage.html?',
+			/**默认回调参数键值 */
 			public $query_key = 'info',
+			/**默认数据序列化器 */
+			public $encoder = 'json_encode',
 		) {
 			Self::$now = $this;
 		}

@@ -37,9 +37,9 @@ class Errpage
 			header('Location: ' . Url::rep_query($c_url, [Cfg::$now->query_key => "$file:\n$info"]));
 			die();
 		};
-		$end = function ($info) use ($from, $ret) {
+		$end = function ($info_raw) use ($from, $ret) {
 			if (!$from) $ret('No $from but using end function in ScpoPHP\Errpage:' . __LINE__);
-			header("Location: " . Url::rep_query($from, [Cfg::$now->query_key => $info]));
+			header("Location: " . Url::rep_query($from, [Cfg::$now->query_key => (Cfg::$now->encoder)($info_raw)]));
 			die();
 		};
 		return [$ret, $end];
